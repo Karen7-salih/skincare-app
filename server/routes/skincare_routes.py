@@ -6,6 +6,7 @@ from database import get_db
 router = APIRouter()
 from models.skincare_models import Skincare
 from models.skin_type_models import skin_type 
+import json
 
 
 
@@ -17,7 +18,7 @@ def get_skincare(db: Session = Depends(get_db)):
     skincare_list = []
     
     for product in skincare_products:
-        # ✅ Ensure skin_type is ALWAYS a list
+        #Ensuring skin_type is ALWAYS a list
         skin_types_names = (
             db.query(skin_type.name)
             .filter(skin_type.id.in_(product.skin_type) if isinstance(product.skin_type, list) else [product.skin_type])
@@ -33,7 +34,7 @@ def get_skincare(db: Session = Depends(get_db)):
             "image_url": product.image_url,
             "link_to_purchase": product.link_to_purchase,
             "category": product.category,
-            "skin_type": skin_types_names,  # ✅ Fix API response
+            "skin_type": skin_types_names, 
             "deleted": product.deleted,
         })
     return skincare_list
@@ -98,7 +99,40 @@ def soft_delete_skincare(skincare_id: int, db: Session = Depends(get_db)):
     return {"message": "Product deleted successfully"}
 
 
+@router.put("/update/{skincare_id}")
+def update_skincare(skincare_id: int, updated_data: SkinCare, db: Session = Depends(get_db)):
+    try:
+        skincare_product = db.query(Skincare).filter(Skincare.id == skincare_id, Skincare.deleted == False).first()
 
+        if not skincare_product:
+            raise HTTPException(status_code=404, detail="Product not found")
+
+        #  Debugging logs: Print incoming update data
+        print(f"🛠️ Update request received for ID {skincare_id}: {json.dumps(updated_data.dict(), indent=2)}")
+
+        # Update only non-empty fields
+        if updated_data.product_name:
+            skincare_product.product_name = updated_data.product_name
+        if updated_data.description:
+            skincare_product.description = updated_data.description
+        if updated_data.price:
+            skincare_product.price = updated_data.price
+        if updated_data.image_url:
+            skincare_product.image_url = updated_data.image_url
+        if updated_data.link_to_purchase:
+            skincare_product.link_to_purchase = updated_data.link_to_purchase
+        if updated_data.category:
+            skincare_product.category = updated_data.category
+        if updated_data.skin_type:
+            skincare_product.skin_type = updated_data.skin_type  # Ensure correct format
+
+        db.commit()
+        db.refresh(skincare_product)
+        return {"message": " Product updated successfully!", "product": skincare_product}
+
+    except Exception as e:
+        print(f" Server error during update: {str(e)}")  #  Log the actual error
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
 

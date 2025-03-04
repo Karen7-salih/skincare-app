@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SkinCareCard from "./SkinCareCard";
 
-const skinTypeMap = {
-    1: "Sensitive",
-    2: "Normal",
-    3: "Dry",
-    4: "Combination",
-    5: "Oily",
-    6: "Acne-Prone"
-};
+// const skinTypeMap = {
+//     1: "Sensitive",
+//     2: "Normal",
+//     3: "Dry",
+//     4: "Combination",
+//     5: "Oily",
+//     6: "Acne-Prone"
+// };
 
 const FetchSkinCareList = ({ selectedCategory }) => {
     const [skincareData, setSkincareData] = useState([]);
@@ -26,18 +26,18 @@ const FetchSkinCareList = ({ selectedCategory }) => {
                     ? `http://127.0.0.1:8000/skincare/category/${encodeURIComponent(selectedCategory)}`
                     : `http://127.0.0.1:8000/skincare`;
         
-                console.log(`📢 Fetching skincare products... Category: ${selectedCategory || "ALL"}`);
+                console.log(` Fetching skincare products... Category: ${selectedCategory || "ALL"}`);
                 
                 const response = await axios.get(url);
-                console.log("✅ API Response:", response.data);
+                console.log(" API Response:", response.data);
         
                 if (!Array.isArray(response.data)) {
                     throw new Error("Invalid API response format. Expected an array.");
                 }
         
-                // 🔹 Check if skin_type is correctly formatted
+                // Check if skin_type is correctly formatted
                 response.data.forEach((product, index) => {
-                    console.log(`🔎 Product ${index + 1} - skin_type:`, product.skin_type);
+                    console.log(` Product ${index + 1} - skin_type:`, product.skin_type);
                 });
         
                 setSkincareData(response.data.map(product => ({
@@ -45,7 +45,7 @@ const FetchSkinCareList = ({ selectedCategory }) => {
                     skin_type: processSkinType(product.skin_type) 
                 })));
             } catch (err) {
-                console.error("❌ Error fetching skincare products:", err);
+                console.error("Error fetching skincare products:", err);
                 setError("Failed to fetch skincare products. Please try again.");
             } finally {
                 setLoading(false);
@@ -57,17 +57,17 @@ const FetchSkinCareList = ({ selectedCategory }) => {
     }, [selectedCategory]);
 
     const processSkinType = (skinType) => {
-        if (!skinType) return ["Unknown"]; // ✅ Handle missing values
+        if (!skinType) return ["Unknown"]; //  Handle missing values
     
         if (Array.isArray(skinType)) {
-            return skinType; // ✅ API already sends names, return as is
+            return skinType; //  API already sends names, return as is
         }
     
         if (typeof skinType === "string") {
-            return [skinType]; // ✅ Wrap single name in an array
+            return [skinType]; //  Wrap single name in an array
         }
     
-        return ["Unknown"]; // ✅ Default fallback
+        return ["Unknown"]; //  Default fallback
     };
     
     const handleSoftDelete = async (id) => {
@@ -77,7 +77,7 @@ const FetchSkinCareList = ({ selectedCategory }) => {
             await axios.put(`http://127.0.0.1:8000/skincare/delete/${id}`);
             setSkincareData(prevData => prevData.filter(item => item.id !== id));
         } catch (err) {
-            console.error("❌ Error deleting product:", err);
+            console.error("Error deleting product:", err);
             alert("Failed to delete product.");
         }
     };

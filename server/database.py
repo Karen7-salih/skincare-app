@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker, Session
 
 DATABASE_URL = "postgresql://postgres:Alkerem1!@localhost:5432/skincare_db"
 
-engine = create_engine(DATABASE_URL, echo=True)  # ✅ Enables SQL debugging
+engine = create_engine(DATABASE_URL, echo=True)  #Enables SQL debugging
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

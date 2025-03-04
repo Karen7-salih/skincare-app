@@ -11,7 +11,7 @@ def get_skincare_from_db(db: Session):
         skincare_products = db.query(Skincare).filter(Skincare.deleted == False).all()
 
         if not skincare_products:
-            print("⚠️ No skincare products found in the database.")
+            print("No skincare products found in the database.")
             return []
 
         # Convert skin_type IDs (stored as an array) into actual names
@@ -34,7 +34,7 @@ def get_skincare_from_db(db: Session):
 
         return skincare_list
     except Exception as e:
-        print(f"❌ ERROR in get_skincare_from_db: {e}")
+        print(f"ERROR in get_skincare_from_db: {e}")
         raise HTTPException(status_code=500, detail=f"Server Error: {str(e)}")
 
 
@@ -69,7 +69,7 @@ def add_skincare(db: Session, skincaredata):
 
 def get_skincare_by_category(db: Session, category_name: str):
     skincare_products = db.query(Skincare).filter(
-        Skincare.category == category_name,  # ✅ Ensure exact category match
+        Skincare.category == category_name,  # Ensure exact category match
         Skincare.deleted == False
     ).all()
 

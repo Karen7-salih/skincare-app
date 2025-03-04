@@ -64,7 +64,7 @@ const SkinCareForm = () => {
                 ...values,
                 skin_type: values.skin_type.map(type => skinTypeMap[type] || 1), // Convert names to IDs
                 price: parseFloat(values.price),
-                category: values.category || "Other", // ✅ Ensure category is not null
+                category: values.category || "Other", //  Ensure category is not null
             };             
             console.log("Fixed values:", formattedValues);
             mutation.mutate(formattedValues);
@@ -119,7 +119,7 @@ const SkinCareForm = () => {
 
 const styles = {
     background: {
-        backgroundImage: "url('/form-bg.jpg')", // ✅ Change this if needed
+        backgroundImage: "url('/form-bg.jpg')", //  Change this if needed
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",

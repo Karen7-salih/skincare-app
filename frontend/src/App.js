@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import Categories from './pages/Categories';
 import { useState } from "react"; // ✅ Import useState
+import Contact from './pages/Contact';
 
 
 function App() {
@@ -17,15 +18,15 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-      <Navbar setSelectedCategory={setSelectedCategory} /> {/* ✅ FIX HERE */}
+      <Navbar setSelectedCategory={setSelectedCategory} /> 
       <Routes>
         <Route path="/" element={<Home selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />} /> 
         <Route path="/add" element={<SkinCareForm />} />
           <Route path="/about" element={<AboutUs />} /> 
           <Route path="/categories" element={<Categories setSelectedCategory={setSelectedCategory} />} />
           <Route path="/skincare" element={<FetchSkinCareList selectedCategory={selectedCategory} />} />
-          <Route path="/contact" element={<h1>Contact Page</h1>} />
-        </Routes>
+          <Route path="/contact" element={<Contact />} /> 
+          </Routes>
       </div>
     </BrowserRouter>
   );

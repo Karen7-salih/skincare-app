@@ -9,7 +9,7 @@ const Navbar = ({ setSelectedCategory }) => {
                 <Link 
                     to="/" 
                     style={styles.link}
-                    onClick={() => setSelectedCategory(null)} // ✅ Reset category when clicking Home
+                    onClick={() => setSelectedCategory(null)} // Reset category when clicking Home
                 >
                     Home
                 </Link>
@@ -57,9 +57,9 @@ const styles = {
         padding: 0,
     },
     logo: {
-        fontSize: "24px", // ✅ Adjusted for cuteness
+        fontSize: "24px", 
         fontWeight: "bold",
-        fontFamily: "'Playfair Display', serif", // ✅ Keeping the cute font
+        fontFamily: "'Playfair Display', serif", 
         color: "#333",
         position: "absolute",
         left: "50%",

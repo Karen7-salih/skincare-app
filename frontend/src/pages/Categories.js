@@ -17,7 +17,7 @@ const Categories = ({ setSelectedCategory }) => {
 
     const handleCategoryClick = (category) => {
         setActiveCategory(category.type);
-        setSelectedCategory(category.type || null); // ✅ Ensures "View All" works
+        setSelectedCategory(category.type || null); // Ensures "View All" works
     };
     
     
