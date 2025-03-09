@@ -8,12 +8,12 @@ import Navbar from './pages/Navbar';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import Categories from './pages/Categories';
-import { useState } from "react"; // ✅ Import useState
+import { useState } from "react"; 
 import Contact from './pages/Contact';
 
 
 function App() {
-  const [selectedCategory, setSelectedCategory] = useState(null); // ✅ Track selected category
+  const [selectedCategory, setSelectedCategory] = useState(null); // Track selected category
 
   return (
     <BrowserRouter>

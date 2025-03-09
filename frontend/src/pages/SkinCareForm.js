@@ -14,7 +14,8 @@ const SkinCareForm = () => {
     };
 
     const skinTypeOptions = Object.keys(skinTypeMap);
-
+    
+    // Send data to the backend via POST request
     const sendNewSkinCare = async (skincaredata) => {
         console.log("Mutation called with:", skincaredata);
         const result = await axios.post("http://localhost:8000/skincare", skincaredata);
@@ -31,7 +32,7 @@ const SkinCareForm = () => {
     const validationSchema = object({
         product_name: string()
             .required("Product name is required")
-            .max(35, "Product name can be at most 35 characters")
+            .max(50, "Product name can be at most 35 characters")
             .matches(/^[a-zA-Z\s]+$/, "Product name cannot contain numbers or special characters"),
         price: number()
             .required("Price is required")
@@ -46,6 +47,7 @@ const SkinCareForm = () => {
         image_url: string().url("Must be a valid URL").nullable(),
         link_to_purchase: string().url("Must be a valid URL").nullable(),
         skin_type: array().of(string()).min(1, "Select at least one skin type"),
+        category: string().required("Category is required") // Adding category as a required field
     });
 
     const formik = useFormik({
@@ -55,7 +57,8 @@ const SkinCareForm = () => {
             skin_type: [],
             description: "",
             image_url: "",
-            link_to_purchase: ""
+            link_to_purchase: "",
+            category: "" // Initial value for category
         },
         validationSchema,
         onSubmit: (values) => {
@@ -64,7 +67,6 @@ const SkinCareForm = () => {
                 ...values,
                 skin_type: values.skin_type.map(type => skinTypeMap[type] || 1), // Convert names to IDs
                 price: parseFloat(values.price),
-                category: values.category || "Other", //  Ensure category is not null
             };             
             console.log("Fixed values:", formattedValues);
             mutation.mutate(formattedValues);
@@ -107,6 +109,25 @@ const SkinCareForm = () => {
                         ))}
                     </div>
                     {formik.errors.skin_type && <div style={styles.error}>{formik.errors.skin_type}</div>}
+
+                    <label style={styles.label}>Category</label>
+                    <select
+                        name="category"
+                        value={formik.values.category}
+                        onChange={formik.handleChange}
+                        style={styles.input}
+                    >
+                        <option value="">Select a Category</option>
+                        <option value="Cleansers">Cleansers</option>
+                        <option value="Moisturizers">Moisturizers</option>
+                        <option value="Sunscreens">Sunscreens</option>
+                        <option value="Toners & Mists">Toners & Mists</option>
+                        <option value="Serums & Treatments">Serums & Treatments</option>
+                        <option value="Exfoliators & Peeling Pads">Exfoliators & Peeling Pads</option>
+                        <option value="Acne Patches & Spot Treatments">Acne Patches & Spot Treatments</option>
+                        <option value="Sheet and Clay Masks">Sheet and Clay Masks</option>
+                    </select>
+                    {formik.errors.category && <div style={styles.error}>{formik.errors.category}</div>}
 
                     <button disabled={!formik.isValid} type="submit" style={styles.button}>
                         Add Product

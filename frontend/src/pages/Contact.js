@@ -45,8 +45,8 @@ const Contact = () => {
             <h2 style={styles.title}>Contact Us</h2>
             <p style={styles.subtitle}>Have a question? We'd love to hear from you!</p>
 
-            {success && <p style={styles.successMessage}>✔️ Your message has been sent!</p>}
-            {error && <p style={styles.errorMessage}>❌ Failed to send message. Try again.</p>}
+            {success && <p style={styles.successMessage}> Your message has been sent!</p>}
+            {error && <p style={styles.errorMessage}> Failed to send message. Try again.</p>}
 
             <form style={styles.form} onSubmit={handleSubmit}>
                 <input
@@ -88,12 +88,12 @@ const styles = {
         fontFamily: "'Poppins', sans-serif",
         maxWidth: "600px",
         margin: "auto",
-        backgroundImage: "url('contact-bg.jpg')", // ✅ Background Image Added
+        backgroundImage: "url('contact-bg.jpg')", //Background Image Added
         backgroundSize: "cover",
         backgroundPosition: "center",
         borderRadius: "10px",
         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-        color: "#fff" // ✅ Ensure text is readable
+        color: "#fff" // Ensure text is readable
     },
     title: { fontSize: "28px", fontWeight: "bold", marginBottom: "10px" , color: "#000"},
     subtitle: { fontSize: "16px", color: "#000", marginBottom: "20px" },

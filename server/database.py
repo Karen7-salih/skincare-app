@@ -1,7 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
+import os
 
-DATABASE_URL = "postgresql://postgres:Alkerem1!@localhost:5432/skincare_db"
+
+ 
+DATABASE_URL = os.getenv("DATABASE_URL_ENV",  "postgresql://postgres:Alkerem1!@db:5435/skincare_db")
+print(f"Connecting to database at: {DATABASE_URL}")
+
 
 engine = create_engine(DATABASE_URL, echo=True)  #Enables SQL debugging
 
