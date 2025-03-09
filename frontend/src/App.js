@@ -10,6 +10,7 @@ import AboutUs from './pages/AboutUs';
 import Categories from './pages/Categories';
 import { useState } from "react"; 
 import Contact from './pages/Contact';
+import VideoRecommendations from './pages/VideoRecommendations';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/categories" element={<Categories setSelectedCategory={setSelectedCategory} />} />
           <Route path="/skincare" element={<FetchSkinCareList selectedCategory={selectedCategory} />} />
           <Route path="/contact" element={<Contact />} /> 
+          <Route path="/videos" element={<VideoRecommendations />} />
           </Routes>
       </div>
     </BrowserRouter>

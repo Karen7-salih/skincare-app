@@ -13,6 +13,7 @@ const Navbar = ({ setSelectedCategory }) => {
                 >
                     Home
                 </Link>
+                <Link to="/videos" style={styles.link}>Skincare in Action</Link>
             </div>
 
             {/* Center: "Skincare" Logo */}

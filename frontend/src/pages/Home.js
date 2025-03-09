@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Categories from "./Categories"; // Categories component
-import SkinCareCard from "./SkinCareCard"; // Product card component
+import Categories from "./Categories"; 
+import SkinCareCard from "./SkinCareCard"; 
 
 const skinTypeMap = {
     1: "Sensitive",
@@ -45,9 +45,9 @@ const Home = ({ selectedCategory, setSelectedCategory }) => {
 
     // Normalize skin type for display
     const normalizeSkinType = (skinType) => {
-        if (!skinType) return ["Unknown"];
-        if (Array.isArray(skinType)) return skinType.map(st => skinTypeMap[st] || st);
-        if (typeof skinType === "string") return [skinTypeMap[parseInt(skinType, 10)] || skinType];
+        if (!skinType) return ["Unknown"];  // If skin type is empty, return "Unknown"
+        if (Array.isArray(skinType)) return skinType.map(st => skinTypeMap[st] || st);  // If it's an array, map it to readable names
+        if (typeof skinType === "string") return [skinTypeMap[parseInt(skinType, 10)] || skinType];  // If it's a string, convert to number & get the mapped name
         return ["Unknown"];
     };
 
@@ -77,6 +77,14 @@ const Home = ({ selectedCategory, setSelectedCategory }) => {
             {/* Categories Section */}
             <Categories setSelectedCategory={setSelectedCategory} />
 
+            {/* Enhanced Coupon Banner */}
+            <div style={styles.couponContainer}>
+                <div style={styles.couponTitle}>SPECIAL OFFER</div>
+                <div style={styles.couponText}>
+                    Kareen's iHerb coupon for 5% off - LOQ6309
+                </div>
+            </div>
+
             {/* Loading and Error Handling */}
             {loading && <p>Loading skincare products...</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
@@ -96,6 +104,34 @@ const Home = ({ selectedCategory, setSelectedCategory }) => {
 };
 
 const styles = {
+    couponContainer: {
+        width: "100%",
+        backgroundColor: "#ff7f50",  // Prettier pink color
+        color: "white",
+        padding: "15px 0", // Taller banner
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: "20px", // Larger text
+        position: "relative",
+        overflow: "hidden",
+        boxSizing: "border-box",
+        marginTop: "20px", // Add space after categories
+        marginBottom: "20px",
+        boxShadow: "0 4px 8px rgba(0,0,0,0.1)", // Subtle shadow for depth
+        borderRadius: "4px", // Slightly rounded corners
+    },
+    couponTitle: {
+        fontWeight: "800", // Extra bold
+        fontSize: "22px",
+        letterSpacing: "1px",
+        marginBottom: "5px",
+        textShadow: "1px 1px 2px rgba(0,0,0,0.2)", // Text shadow for better visibility
+    },
+    couponText: {
+        position: "relative", // Coupon text with no animation
+        whiteSpace: "nowrap",
+        fontWeight: "600", // Semi-bold
+    },
     heroContainer: {
         width: "100%",
         height: "400px",  // Adjust this as needed
@@ -104,7 +140,7 @@ const styles = {
     heroImage: {
         width: "100%",
         height: "100%",
-        objectFit: "cover",  // Makes sure the image covers the whole container
+        objectFit: "cover", // Ensures the image covers the whole container
     },
     grid: {
         display: "grid",
