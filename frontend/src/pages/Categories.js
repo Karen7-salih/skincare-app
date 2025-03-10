@@ -35,14 +35,18 @@ const Categories = ({ setSelectedCategory, selectedCategory }) => {
               ...styles.categoryCard,
               ...(activeCategory === category.type ? styles.selectedCategory : {}),
             }}
+            onClick={() => handleCategoryClick(category)}
           >
-            <div
-              onClick={() => handleCategoryClick(category)} // Handle category click to set selected category
-              style={{ cursor: "pointer", textAlign: "center" }}
-            >
+            <div style={styles.imageContainer}>
               <img src={category.image} alt={category.name} style={styles.image} />
-              <p>{category.name}</p>
+              {activeCategory === category.type && <div style={styles.selectionRing}></div>}
             </div>
+            <p style={{
+              ...styles.categoryName,
+              ...(activeCategory === category.type ? styles.selectedCategoryName : {})
+            }}>
+              {category.name}
+            </p>
           </div>
         ))}
       </div>
@@ -51,26 +55,63 @@ const Categories = ({ setSelectedCategory, selectedCategory }) => {
 };
 
 const styles = {
-  container: { textAlign: "center", padding: "30px", backgroundColor: "#FAFAFA" },
-  grid: { display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "30px" },
+  container: { 
+    textAlign: "center", 
+    padding: "30px", 
+    backgroundColor: "#FAFAFA" 
+  },
+  grid: { 
+    display: "flex", 
+    justifyContent: "center", 
+    flexWrap: "wrap", 
+    gap: "30px" 
+  },
   categoryCard: {
     textAlign: "center",
     cursor: "pointer",
-    transition: "transform 0.3s ease-in-out",
+    transition: "all 0.3s ease-in-out",
     padding: "10px",
-    borderRadius: "50%",
     width: "150px",
-    height: "150px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
   },
-  selectedCategory: {
-    boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.3)",  // Increased shadow size and opacity
-    transform: "scale(3.1)",  // Slightly enlarge the selected category
-    transition: "transform 0.3s ease, box-shadow 0.3s ease", // Smooth transition
+  imageContainer: {
+    position: "relative",
+    borderRadius: "50%",
+    width: "140px",
+    height: "140px",
+    overflow: "hidden",
   },
-  image: { width: "140px", height: "140px", borderRadius: "50%", objectFit: "cover" },
+  selectedCategory: {
+    transform: "scale(1.1)",  // More subtle scale
+  },
+  selectionRing: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: "50%",
+    border: "4px solid #FF85A2",  // Pink border for selection
+    boxShadow: "0px 0px 15px rgba(255, 133, 162, 0.6)",  // Glowing effect
+  },
+  image: { 
+    width: "100%", 
+    height: "100%", 
+    borderRadius: "50%", 
+    objectFit: "cover" 
+  },
+  categoryName: {
+    marginTop: "10px",
+    fontWeight: "normal",
+    transition: "all 0.3s ease",
+  },
+  selectedCategoryName: {
+    fontWeight: "bold",
+    color: "#FF85A2",  // Matching the selection ring color
+  },
 };
+
 export default Categories;
