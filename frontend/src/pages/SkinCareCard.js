@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-
-
 const skinTypeMap = {
     "Sensitive": 1,
     "Normal": 2,
@@ -12,7 +10,6 @@ const skinTypeMap = {
     "Acne-Prone": 6
 };
 
-
 const SkinCareCard = ({ skincare, onSoftDelete }) => {
     const [hover, setHover] = useState(false);
     const [btnHover, setBtnHover] = useState(false);
@@ -21,52 +18,67 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
         product_name: skincare.product_name,
         price: skincare.price,
         description: skincare.description,
-        image_url: skincare.image_url, // ✅ Ensure these fields are included
+        image_url: skincare.image_url, 
         link_to_purchase: skincare.link_to_purchase,
         category: skincare.category,
         skin_type: skincare.skin_type, 
     });
 
-    // ✅ Handle form input changes
+    // ✅ Handle form input changes with validation
     const handleInputChange = (e) => {
-        setEditData({ ...editData, [e.target.name]: e.target.value });
+        let { name, value } = e.target;
+
+        // Prevent negative price input
+        if (name === "price" && parseFloat(value) < 0) {
+            alert("❌ Price cannot be negative!");
+            return;
+        }
+
+        setEditData({ ...editData, [name]: value });
     };
 
     const handleSaveEdit = async () => {
         try {
             console.log("📝 Sending edit request:", editData);
-    
+
             if (!skincare.id) {
                 alert("❌ Error: Missing product ID");
                 return;
             }
-    
+
             // ✅ Convert skin type names to IDs
             const convertedSkinTypes = Array.isArray(editData.skin_type)
-                ? editData.skin_type.map(st => skinTypeMap[st] || null).filter(id => id !== null) // ✅ Filter out invalid types
+                ? editData.skin_type.map(st => skinTypeMap[st] || null).filter(id => id !== null)
                 : skincare.skin_type;
-    
+
+            // ✅ Ensure price is valid
+            const updatedPrice = parseFloat(editData.price);
+            if (isNaN(updatedPrice) || updatedPrice < 0) {
+                alert("❌ Price must be a valid number and cannot be negative!");
+                return;
+            }
+
             // ✅ Ensure only valid fields are sent
             const updatedData = {
                 product_name: editData.product_name || skincare.product_name,
-                price: parseFloat(editData.price) || skincare.price,
+                price: updatedPrice,
                 description: editData.description || skincare.description,
                 image_url: editData.image_url || skincare.image_url,
                 link_to_purchase: editData.link_to_purchase || skincare.link_to_purchase,
                 category: editData.category || skincare.category,
-                skin_type: convertedSkinTypes,  // ✅ Send as numbers
+                skin_type: convertedSkinTypes,
             };
-    
+
             console.log("📤 Sending updated data:", updatedData);
-    
+
             const response = await axios.put(
                 `http://127.0.0.1:8000/skincare/update/${skincare.id}`,
                 updatedData,
                 { headers: { "Content-Type": "application/json" } }
             );
-    
+
             console.log("✅ Edit response:", response.data);
-    
+
             if (response.status === 200) {
                 alert("✅ Product updated successfully!");
                 setIsEditing(false);
@@ -79,8 +91,7 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
             alert(`Failed to save changes. Server error: ${JSON.stringify(error.response?.data || error.message)}`);
         }
     };
-    
-    
+
     return (
         <div 
             className="skincare-item"
@@ -142,22 +153,6 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
                         {skincare.description}
                     </p>
 
-                    {/* ✅ Skin Type Display */}
-                    <p style={{ fontSize: "14px", fontWeight: "bold", color: "#444" }}>
-                        <strong>Skin Type:</strong> 
-                        {Array.isArray(skincare.skin_type) && skincare.skin_type.length > 0 
-                           ? skincare.skin_type.join(", ") 
-                           : "Unknown"}
-                    </p>
-
-                    {/* ✅ Edit Button */}
-                    <button 
-                        onClick={() => setIsEditing(true)} 
-                        style={styles.editButton}
-                    >
-                        Edit
-                    </button>
-
                     {/* ✅ Buy Now Button */}
                     {skincare.link_to_purchase ? (
                         <a href={skincare.link_to_purchase} target="_blank" rel="noopener noreferrer">
@@ -187,6 +182,14 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
                         </p>
                     )}
 
+                    {/* ✅ Edit Button */}
+                    <button 
+                        onClick={() => setIsEditing(true)} 
+                        style={styles.editButton}
+                    >
+                        Edit
+                    </button>
+
                     {/* ✅ Delete Button */}
                     <button 
                         style={styles.deleteButton}
@@ -213,25 +216,6 @@ const styles = {
     },
     deleteButton: {
         backgroundColor: "#ffb6c1",
-        color: "white",
-        padding: "10px 15px",
-        borderRadius: "20px",
-        cursor: "pointer",
-        marginTop: "10px",
-        border: "none"
-    },
-    saveButton: {
-        backgroundColor: "#2ecc71",
-        color: "white",
-        padding: "10px 15px",
-        borderRadius: "20px",
-        cursor: "pointer",
-        marginTop: "10px",
-        border: "none",
-        marginRight: "5px"
-    },
-    cancelButton: {
-        backgroundColor: "#95a5a6",
         color: "white",
         padding: "10px 15px",
         borderRadius: "20px",

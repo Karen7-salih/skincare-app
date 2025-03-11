@@ -47,7 +47,7 @@ const styles = {
     fontWeight: "bold",
     marginBottom: "20px",
     color: "#333",
-    textShadow: "0 0 5px white", // Optional: adds shadow to make text readable on any background
+    textShadow: "0 0 5px white", // adds shadow to make text readable on any background
   },
   grid: {
     display: "grid",

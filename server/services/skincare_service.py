@@ -1,3 +1,6 @@
+""" Processes data and business logic.meaning it actually does routes work """
+
+
 from schemas.skincare import SkinCare
 from sqlalchemy.orm import Session
 from models.skincare_models import Skincare
@@ -52,11 +55,6 @@ def deleted_skincare(db: Session, skincare_id: int):
     db.commit()
     db.refresh(skincare_product) #Update the object with the latest database state
     return skincare_product
-
-
-
-
-
 
 
 

@@ -1,3 +1,6 @@
+""" Validates and structures API data. """
+
+
 from pydantic import BaseModel
 from typing import List, Optional, Union
 from datetime import datetime

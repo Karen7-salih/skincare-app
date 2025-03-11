@@ -1,3 +1,5 @@
+""" Handles API requests with FastAPI. """
+
 
 from fastapi import APIRouter, HTTPException, Depends
 from services.skincare_service import get_skincare_from_db, add_skincare, get_skincare_by_category , deleted_skincare , update_skincare

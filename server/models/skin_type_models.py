@@ -1,3 +1,6 @@
+""" Defines database tables and their structure. """
+
+
 from sqlalchemy import Column, Integer, String, Float, ARRAY
 from database import Base
 
