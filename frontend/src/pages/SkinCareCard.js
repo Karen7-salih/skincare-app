@@ -24,13 +24,13 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
         skin_type: skincare.skin_type, 
     });
 
-    // ✅ Handle form input changes with validation
+    // Handle form input changes with validation
     const handleInputChange = (e) => {
         let { name, value } = e.target;
 
         // Prevent negative price input
         if (name === "price" && parseFloat(value) < 0) {
-            alert("❌ Price cannot be negative!");
+            alert(" Price cannot be negative!");
             return;
         }
 
@@ -39,26 +39,26 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
 
     const handleSaveEdit = async () => {
         try {
-            console.log("📝 Sending edit request:", editData);
+            console.log("Sending edit request:", editData);
 
             if (!skincare.id) {
-                alert("❌ Error: Missing product ID");
+                alert("Error: Missing product ID");
                 return;
             }
 
-            // ✅ Convert skin type names to IDs
+            // Convert skin type names to IDs
             const convertedSkinTypes = Array.isArray(editData.skin_type)
                 ? editData.skin_type.map(st => skinTypeMap[st] || null).filter(id => id !== null)
                 : skincare.skin_type;
 
-            // ✅ Ensure price is valid
+            // Ensure price is valid
             const updatedPrice = parseFloat(editData.price);
             if (isNaN(updatedPrice) || updatedPrice < 0) {
                 alert("❌ Price must be a valid number and cannot be negative!");
                 return;
             }
 
-            // ✅ Ensure only valid fields are sent
+            // Ensure only valid fields are sent
             const updatedData = {
                 product_name: editData.product_name || skincare.product_name,
                 price: updatedPrice,
@@ -69,7 +69,7 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
                 skin_type: convertedSkinTypes,
             };
 
-            console.log("📤 Sending updated data:", updatedData);
+            console.log(" Sending updated data:", updatedData);
 
             const response = await axios.put(
                 `http://127.0.0.1:8000/skincare/update/${skincare.id}`,
@@ -77,17 +77,17 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
                 { headers: { "Content-Type": "application/json" } }
             );
 
-            console.log("✅ Edit response:", response.data);
+            console.log(" Edit response:", response.data);
 
             if (response.status === 200) {
-                alert("✅ Product updated successfully!");
+                alert(" Product updated successfully!");
                 setIsEditing(false);
                 window.location.reload();
             } else {
                 throw new Error("Server responded with an error.");
             }
         } catch (error) {
-            console.error("❌ Error updating product:", error.response?.data || error);
+            console.error(" Error updating product:", error.response?.data || error);
             alert(`Failed to save changes. Server error: ${JSON.stringify(error.response?.data || error.message)}`);
         }
     };
@@ -115,7 +115,7 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
                 style={{ width: "100%", height: "250px", objectFit: "cover", borderRadius: "10px" }} 
             />
 
-            {/* ✅ Edit Mode */}
+            {/*  Edit Mode */}
             {isEditing ? (
                 <div>
                     <input 
@@ -153,50 +153,41 @@ const SkinCareCard = ({ skincare, onSoftDelete }) => {
                         {skincare.description}
                     </p>
 
-                    {/* ✅ Buy Now Button */}
-                    {skincare.link_to_purchase ? (
-                        <a href={skincare.link_to_purchase} target="_blank" rel="noopener noreferrer">
-                            <button 
-                                style={{
-                                    padding: "12px 18px",
-                                    borderRadius: "50px",
-                                    cursor: "pointer",
-                                    border: "none",
-                                    background: btnHover ? "#C0A080" : "#D2B48C",
-                                    color: "#fff",
-                                    fontWeight: "bold",
-                                    fontSize: "14px",
-                                    marginTop: "15px",
-                                    transition: "background 0.3s ease, transform 0.2s ease",
-                                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
-                                }}
-                                onMouseEnter={() => setBtnHover(true)}
-                                onMouseLeave={() => setBtnHover(false)}
-                            >
-                                Buy Now
-                            </button>
-                        </a>
-                    ) : (
-                        <p style={{ color: "pink", fontSize: "14px", marginTop: "10px" }}>
-                            Purchase link not available
-                        </p>
-                    )}
+                    {/* Buttons Container */}
+                    <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
+                        {/* Edit Button */}
+                        <button 
+                            onClick={() => setIsEditing(true)} 
+                            style={styles.editButton}
+                        >
+                            Edit
+                        </button>
 
-                    {/* ✅ Edit Button */}
-                    <button 
-                        onClick={() => setIsEditing(true)} 
-                        style={styles.editButton}
-                    >
-                        Edit
-                    </button>
+                        {/*  Buy Now Button in the Middle */}
+                        {skincare.link_to_purchase ? (
+                            <a href={skincare.link_to_purchase} target="_blank" rel="noopener noreferrer">
+                                <button 
+                                    style={styles.buyNowButton}
+                                    onMouseEnter={() => setBtnHover(true)}
+                                    onMouseLeave={() => setBtnHover(false)}
+                                >
+                                    Buy Now
+                                </button>
+                            </a>
+                        ) : (
+                            <p style={{ color: "pink", fontSize: "14px", marginTop: "10px" }}>
+                                Purchase link not available
+                            </p>
+                        )}
 
-                    {/* ✅ Delete Button */}
-                    <button 
-                        style={styles.deleteButton}
-                        onClick={() => onSoftDelete(skincare.id)}
-                    >
-                        Delete
-                    </button>
+                        {/*  Delete Button */}
+                        <button 
+                            style={styles.deleteButton}
+                            onClick={() => onSoftDelete(skincare.id)}
+                        >
+                            Delete
+                        </button>
+                    </div>
                 </>
             )}
         </div>
@@ -210,9 +201,7 @@ const styles = {
         padding: "10px 15px",
         borderRadius: "20px",
         cursor: "pointer",
-        marginTop: "10px",
         border: "none",
-        marginRight: "5px"
     },
     deleteButton: {
         backgroundColor: "#ffb6c1",
@@ -220,8 +209,19 @@ const styles = {
         padding: "10px 15px",
         borderRadius: "20px",
         cursor: "pointer",
-        marginTop: "10px",
-        border: "none"
+        border: "none",
+    },
+    buyNowButton: {
+        padding: "10px 18px",
+        borderRadius: "20px",
+        cursor: "pointer",
+        border: "none",
+        background: "#D2B48C",
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: "14px",
+        transition: "background 0.3s ease, transform 0.2s ease",
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
     }
 };
 

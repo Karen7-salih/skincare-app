@@ -158,7 +158,7 @@ const styles = {
     },
     followUsContainer: {
         textAlign: "center",
-        backgroundColor: "#ff7f50", // Changed from #000 to #ff7f50 to match coupon section
+        backgroundColor: "#ff7f50", 
         padding: "30px",
         color: "white",
         fontWeight: "bold",

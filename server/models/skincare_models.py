@@ -1,6 +1,5 @@
 """ Defines database tables and their structure. """
 
-
 from sqlalchemy import Column, Integer, String, Float, ARRAY , Boolean
 from database import Base
 from sqlalchemy import DateTime
