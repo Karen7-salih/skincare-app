@@ -8,7 +8,7 @@ const AboutUs = () => {
                 <p style={styles.text}>
                     Tired of spending **hours** researching skincare products, checking ingredients,  
                     and wondering if they are truly safe for your skin?  
-                    <strong>We’ve done the work for you.</strong>  
+                    <strong>We’ve done the work for you. as always</strong>  
                 </p>
 
                 <div style={styles.section}>
