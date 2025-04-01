@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.skincare_routes import router as skincare_router
 
+
 app = FastAPI()
 
 origins = [
